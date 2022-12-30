@@ -36,36 +36,35 @@ Please choose from the following:
 
 
 def process_dice_result(result):
-    global partToAppend
-    if turnToPlay == "PLAYER":
-        stats = playerStats
-    else:
-        stats = computerStats
-
+    # return [Bool, BeetlePart]
     qualifyingParts = DICE_THROW_RESULTS[str(result)]
 
-    if type(qualifyingParts) == dict:
-        if qualifyingParts not in stats['beetleParts']:
-            partToAppend = qualifyingParts
+    if turnToPlay == "COMPUTER":
+        stats = computerStats
+
+    if turnToPlay == "PLAYER":
+        stats = playerStats
+
+    if result != 6:
+        if BeetleParts.BODY not in stats['beetleParts']:
+            return [False, None]
+
+    if result == 2 or result == 3:
+        if BeetleParts.HEAD not in stats['beetleParts']:
+            return [False, None]
+
+    for qualifyingPart in qualifyingParts:
+        if qualifyingPart not in stats['beetleParts']:
+            partToAppend = qualifyingPart
         else:
-            return [False, None]
+            partToAppend = None
+            continue
 
+    if partToAppend == None:
+        return [False, partToAppend]
     else:
-        for x in qualifyingParts:
-            if x not in stats["beetleParts"]:
-                partToAppend = x
-                break
-
-    if partToAppend in [BeetleParts.HEAD, BeetleParts.LEFT_LEG_TOP, BeetleParts.LEFT_LEG_MIDDLE, BeetleParts.LEFT_LEG_BOTTOM, BeetleParts.RIGHT_LEG_TOP, BeetleParts.RIGHT_LEG_MIDDLE, BeetleParts.RIGHT_LEG_BOTTOM, BeetleParts.TAIL]:
-        if BeetleParts.BODY not in stats["beetleParts"]:
-            return [False, None]
-
-    if partToAppend in [BeetleParts.LEFT_EYE, BeetleParts.RIGHT_EYE, BeetleParts.LEFT_ANTENNA, BeetleParts.RIGHT_ANTENNA]:
-        if BeetleParts.HEAD not in stats["beetleParts"]:
-            return [False, None]
-
-    stats["beetleParts"].append(partToAppend)
-    return [True, partToAppend]
+        stats['beetleParts'].append(partToAppend)
+        return [True, partToAppend]
 
 
 def computer_turn_to_play():
@@ -143,14 +142,15 @@ def main():
 
 if __name__ == "__main__":
     DICE_THROW_RESULTS = {
-        "6": BeetleParts.BODY,
-        "5": BeetleParts.HEAD,
+        "6": [BeetleParts.BODY],
+        "5": [BeetleParts.HEAD],
         "4": [BeetleParts.LEFT_LEG_TOP, BeetleParts.LEFT_LEG_MIDDLE, BeetleParts.LEFT_LEG_BOTTOM, BeetleParts.RIGHT_LEG_TOP, BeetleParts.RIGHT_LEG_MIDDLE, BeetleParts.RIGHT_LEG_BOTTOM],
         "3": [BeetleParts.LEFT_EYE, BeetleParts.RIGHT_EYE],
         "2": [BeetleParts.LEFT_ANTENNA, BeetleParts.RIGHT_ANTENNA],
-        "1": BeetleParts.TAIL
+        "1": [BeetleParts.TAIL]
     }
-    playerStats = {"beetleParts": []}
+    playerStats = {"beetleParts": [BeetleParts.BODY, BeetleParts.HEAD, BeetleParts.LEFT_LEG_TOP, BeetleParts.LEFT_LEG_MIDDLE, BeetleParts.LEFT_LEG_BOTTOM, BeetleParts.RIGHT_LEG_TOP,
+                                   BeetleParts.RIGHT_LEG_MIDDLE, BeetleParts.RIGHT_LEG_BOTTOM, BeetleParts.LEFT_EYE, BeetleParts.RIGHT_EYE, BeetleParts.LEFT_ANTENNA, BeetleParts.RIGHT_ANTENNA]}
     computerStats = {"beetleParts": []}
     turnToPlay = "COMPUTER"
     main()
