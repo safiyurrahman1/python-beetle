@@ -149,8 +149,7 @@ if __name__ == "__main__":
         "2": [BeetleParts.LEFT_ANTENNA, BeetleParts.RIGHT_ANTENNA],
         "1": [BeetleParts.TAIL]
     }
-    playerStats = {"beetleParts": [BeetleParts.BODY, BeetleParts.HEAD, BeetleParts.LEFT_LEG_TOP, BeetleParts.LEFT_LEG_MIDDLE, BeetleParts.LEFT_LEG_BOTTOM, BeetleParts.RIGHT_LEG_TOP,
-                                   BeetleParts.RIGHT_LEG_MIDDLE, BeetleParts.RIGHT_LEG_BOTTOM, BeetleParts.LEFT_EYE, BeetleParts.RIGHT_EYE, BeetleParts.LEFT_ANTENNA, BeetleParts.RIGHT_ANTENNA]}
+    playerStats = {"beetleParts": []}
     computerStats = {"beetleParts": []}
     turnToPlay = "COMPUTER"
     main()
